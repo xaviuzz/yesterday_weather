@@ -12,8 +12,8 @@ Dayparts, rain, `weather_code`, next 24 hours, geocoding, configurable units, a 
 
 Inside out: pure code first, I/O last. A step is done when its tests, clippy, fmt and build pass. A dependency enters in the step whose failing test needs it.
 
-- [ ] 1. `FeelsLikeDifference`: two temperatures to a signed difference.
-- [ ] 2. Classify the difference into the threshold bands.
+- [x] 1. `FeelsLikeDifference`: two temperatures to a signed difference.
+- [x] 2. Classify the difference into the threshold bands.
 - [ ] 3. `Summary` to Spanish text with numeric detail and attribution.
 - [ ] 4. `WeatherSeries`: now and yesterday at this hour, tested with a fake `WeatherSource`.
 - [ ] 5. `Location` from args, with an error for invalid arguments.
