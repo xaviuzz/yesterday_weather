@@ -51,5 +51,9 @@ Depth: `seen` = one line was enough, `explained` = rule plus example, `solid` = 
 | `slice.get(i)` returns `Option<&T>` instead of panicking like `slice[i]` | explained | `degrees_after` |
 | `const` with a primitive type | seen | `ARGUMENT_COUNT` |
 | `use path::Item;` brings a name into scope | seen | `ParseFloatError` |
+| `mod name;` in `lib.rs` declares a module whose code lives in `name.rs` | explained | `lib.rs` |
+| `pub use module::Item;` re-exports, so outsiders write `crate_name::Item` and not `crate_name::module::Item` | explained | `lib.rs` |
+| `use crate::module::Item;` imports from another module of the same crate | explained | `summary.rs` |
+| `pub(crate)`: visible in the whole crate, hidden from `tests/` and other crates | explained | `Celsius::degrees` |
 
-Not covered yet: lifetimes, modules, ownership of non-`Copy` values.
+Not covered yet: lifetimes, ownership of non-`Copy` values.
