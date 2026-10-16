@@ -4,6 +4,10 @@ Rust CLI that compares the weather now (and the next 24 hours) with yesterday's 
 
 Reference: `.claude/reference/weather-rust.md` (APIs, crates, design of the natural-language summary). Its limits and versions were checked on 2026-10-15; verify them before relying on them.
 
+## Learning
+
+Technology: Rust. Doctrine: PrometeuZZ `.claude/learning-projects.md`. Ledger: PrometeuZZ `.claude/concepts/rust.md`. Explain each new Rust construct (`&self`, `mut`, `derive`, `Copy`) the first time it appears in code.
+
 ## Commands
 
 - `cargo test`
@@ -15,7 +19,6 @@ Reference: `.claude/reference/weather-rust.md` (APIs, crates, design of the natu
 
 - Package `yesterday_weather` (cargo wants snake_case); the folder is `yesterdayWeather`.
 - Readability for a Rust learner: explicit types where inference hides what a value is, one concept per small function or type, names that say the domain term (`Daypart`, `ThermalSensationChange`), no macro or trait tricks while a plain construct works.
-- Teaching pace: the first cycles of a new kind of step run one at a time, each explained; the rest run in one go. Explain each new Rust construct (`&self`, `mut`, `derive`, `Copy`) in a few lines the first time it appears in code. When Xavier asks what a symbol means, answer with the Rust rule and a two-line example. Before explaining, read `.claude/rust-concepts.md`: skip what is `solid`, give one line for `seen`, explain in full what is not listed. After explaining, add or raise the concept there.
 - The global conventions (explaining variables, explicit loops, one return, no ternary, no comments) apply. Where Rust forces an idiom (`match`, `?`, `Option`, iterators over borrowed data), prefer the most plain form and say so here when it is a decision.
 - No dependencies yet. Each crate is added when a failing test needs it, with its why recorded here. The reference proposes `ureq`, `serde`, `serde_json`, `anyhow`, `clap`, `jiff` as candidates.
 - Walking skeleton: scope and ordered steps in `.claude/specs/walking-skeleton.md`. Read it when starting or resuming a step.
