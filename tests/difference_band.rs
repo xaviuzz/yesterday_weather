@@ -1,4 +1,4 @@
-use yesterday_weather::{Celsius, DifferenceBand, FeelsLikeDifference};
+use yesterday_weather::{Celsius, DifferenceBand, ThermalSensationChange};
 
 #[test]
 fn no_difference_is_about_the_same() {
@@ -85,13 +85,16 @@ fn exactly_six_degrees_warmer_is_much_warmer() {
 }
 
 struct Sut {
-    difference: FeelsLikeDifference,
+    difference: ThermalSensationChange,
 }
 
 impl Sut {
     fn yesterday_and_now(yesterday: f64, now: f64) -> Sut {
-        let difference: FeelsLikeDifference =
-            FeelsLikeDifference::between(Celsius(yesterday), Celsius(now));
+        let difference: ThermalSensationChange =
+            ThermalSensationChange::between(
+                Celsius::new(yesterday),
+                Celsius::new(now),
+            );
         Sut { difference }
     }
 
