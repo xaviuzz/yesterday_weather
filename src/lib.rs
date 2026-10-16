@@ -1,3 +1,5 @@
+use std::num::ParseFloatError;
+
 #[derive(Clone, Copy)]
 pub struct Celsius(f64);
 
@@ -50,6 +52,8 @@ impl ThermalSensationChange {
 #[derive(Debug, PartialEq)]
 pub enum WeatherError {
     IncompleteSeries,
+    SourceUnavailable,
+    InvalidArguments,
 }
 
 const HOURS_PER_DAY: usize = 24;
@@ -84,6 +88,94 @@ impl WeatherSeries {
         let yesterday: Celsius = self.hourly[yesterday_position];
         let now: Celsius = self.hourly[now_position];
         ThermalSensationChange::between(yesterday, now)
+    }
+}
+
+pub struct Location {
+    latitude: f64,
+    longitude: f64,
+}
+
+const ARGUMENT_COUNT: usize = 4;
+const MAX_LATITUDE: f64 = 90.0;
+const MAX_LONGITUDE: f64 = 180.0;
+
+impl Location {
+    pub fn from_args(args: &[String]) -> Result<Location, WeatherError> {
+        let has_two_pairs: bool = args.len() == ARGUMENT_COUNT;
+        let latitude: f64 =
+            Location::degrees_after(args, "--lat", MAX_LATITUDE)?;
+        let longitude: f64 =
+            Location::degrees_after(args, "--lon", MAX_LONGITUDE)?;
+        let mut built: Result<Location, WeatherError> =
+            Err(WeatherError::InvalidArguments);
+        if has_two_pairs {
+            built = Ok(Location {
+                latitude,
+                longitude,
+            });
+        }
+        built
+    }
+
+    fn degrees_after(
+        args: &[String],
+        flag: &str,
+        limit: f64,
+    ) -> Result<f64, WeatherError> {
+        let mut degrees: Result<f64, WeatherError> =
+            Err(WeatherError::InvalidArguments);
+        for position in 0..args.len() {
+            if args[position] == flag {
+                let value: Option<&String> = args.get(position + 1);
+                degrees = Location::degrees_within(value, limit);
+            }
+        }
+        degrees
+    }
+
+    fn degrees_within(
+        value: Option<&String>,
+        limit: f64,
+    ) -> Result<f64, WeatherError> {
+        let mut degrees: Result<f64, WeatherError> =
+            Err(WeatherError::InvalidArguments);
+        if let Some(text) = value {
+            let parsed: Result<f64, ParseFloatError> = text.parse::<f64>();
+            degrees = match parsed {
+                Ok(number) if number.abs() <= limit => Ok(number),
+                _ => Err(WeatherError::InvalidArguments),
+            };
+        }
+        degrees
+    }
+
+    pub fn latitude(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn longitude(&self) -> f64 {
+        self.longitude
+    }
+}
+
+pub trait WeatherSource {
+    fn weather_series(&self) -> Result<WeatherSeries, WeatherError>;
+}
+
+pub struct YesterdayComparison<S: WeatherSource> {
+    source: S,
+}
+
+impl<S: WeatherSource> YesterdayComparison<S> {
+    pub fn of(source: S) -> YesterdayComparison<S> {
+        YesterdayComparison { source }
+    }
+
+    pub fn summary(&self) -> Result<Summary, WeatherError> {
+        let series: WeatherSeries = self.source.weather_series()?;
+        let change: ThermalSensationChange = series.change();
+        Ok(Summary::of(change))
     }
 }
 
