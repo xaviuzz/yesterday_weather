@@ -16,8 +16,8 @@ Inside out: pure code first, I/O last. A step is done when its tests, clippy, fm
 - [x] 2. Classify the difference into the threshold bands.
 - [x] 3. `Summary` to Spanish text with numeric detail.
 - [x] 4. `WeatherSeries::new(hourly, current_hour)` to `ThermalSensationChange` via `change()`; a series shorter than `24 + current_hour + 1` is `WeatherError::IncompleteSeries`. Cycles: (1) 48 values, hour 14, right change; (2) hours 0 and 23; (3) too-short series (first `Result` and error enum, explained, `new` changes signature).
-- [ ] 4b. `WeatherSource` trait and a use case that turns a source into a `Summary`, tested with a fake. Questions on the trait shape and on the order with step 5 are asked when it starts.
-- [ ] 5. `Location` from args, with an error for invalid arguments.
+- [x] 4b. `WeatherSource` trait and a use case that turns a source into a `Summary`, tested with a fake. Shape and why in `CLAUDE.md`. Tests in `tests/`, public library only, with a `FakeWeatherSource` in the test file. Cycles: (1) a fake with 48 values gives the right sentence from `summary().text()` (first trait, `impl Trait for`, generics: runs alone, explained); (2) a failing fake gives `Err(SourceUnavailable)`.
+- [x] 5. `Location` from args, with an error for invalid arguments.
 - [ ] 6. Open-Meteo adapter: fixed JSON to `WeatherSeries` (`serde`, `serde_json`).
 - [ ] 7. Real `ureq` call behind `WeatherSource`, with the `#[ignore]` test against Valencia.
 - [ ] 8. `main.rs` wired: error to stderr, exit code 1.

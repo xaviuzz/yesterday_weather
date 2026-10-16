@@ -38,5 +38,18 @@ Depth: `seen` = one line was enough, `explained` = rule plus example, `solid` = 
 | `.err()` turns a `Result` into the `Option` of its error | seen | `Sut::error` |
 | `self` by value (no `&`): the method consumes the value, which cannot be used afterward | seen | `Sut::band(self)` |
 | `for _ in 0..n`: `_` names a value you do not use | seen | `Sut::with_count_at_hour` |
+| `trait`: a named set of methods a type promises to have; `impl Trait for Type` makes the promise | explained | `WeatherSource`, `FakeWeatherSource` |
+| Generic struct `Struct<S: Trait>`: `S` is any type that implements the trait, fixed at compile time | explained | `YesterdayComparison<S>` |
+| `impl<S: Trait> Struct<S>`: the `impl` block repeats the generic parameter | explained | `YesterdayComparison` |
+| `?` after a `Result`: on `Err` return it from the function, on `Ok` unwrap the value | explained | `summary()` |
+| `.clone()` makes an owned copy of a non-`Copy` value such as a `Vec` | seen | `FakeWeatherSource` |
+| `&[String]`: a slice, a borrowed view of a list; `&owned` turns a `Vec<String>` into one | explained | `Location::from_args` |
+| `text.parse::<f64>()`: text to number, returns a `Result`; `::<f64>` names the target type (turbofish) | explained | `degrees_within` |
+| `if let Some(x) = option`: run the block only when the `Option` has a value | explained | `degrees_within` |
+| `match` arm with a guard: `Ok(n) if n.abs() <= limit => ...` | explained | `degrees_within` |
+| `_` as a catch-all `match` arm | seen | `degrees_within` |
+| `slice.get(i)` returns `Option<&T>` instead of panicking like `slice[i]` | explained | `degrees_after` |
+| `const` with a primitive type | seen | `ARGUMENT_COUNT` |
+| `use path::Item;` brings a name into scope | seen | `ParseFloatError` |
 
-Not covered yet: `?`, traits, lifetimes, modules, ownership of non-`Copy` values.
+Not covered yet: lifetimes, modules, ownership of non-`Copy` values.
